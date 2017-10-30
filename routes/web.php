@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/home','MainPageController@show')->name('mainpage');
+Route::get('/register','MainPageController@create')->name('register');
+Route::get('/welcome','MainPageController@postLogin')->name('welcome');
