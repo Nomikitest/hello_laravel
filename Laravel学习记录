@@ -1,0 +1,51 @@
+Route->Controller->view->balde->html
+
+从第三章可以看出，流程是从上面走下来的。
+首先在route/web.php中，定义几个我们需要跳转的界面
+route::get('/','StaticPagesController@home')->name('home'); 
+route::get('/help','StaticPagesController@help')->name('help'); 
+route::get('/about','StaticPagesController@about')->name('about'); 
+
+注意看结构，第一个参数是路径（外链显示）
+即：
+nomiki.app/
+nomiki.app/help
+在Laravel中{{ route('home')}} 解释的是name后面的。但是展示给大家看的是前面的参数
+
+第二个参数需要使用Laravel框架的php artisan make:controller StaticPagesController 建立
+即到了第二步。
+StaticPagesController
+{
+	public function home()
+	{
+		return view('static_pages/home');
+	}	
+}
+SPC类中新建home方法，对应route中的第二个参数 'StaticPagesController@home'
+
+return 的是Laravel中的view方法，view方法的方式是从view文件夹中寻找路径进行解析
+例如home.blade.php文件在【resource\view\static_pages\】中 
+那么view自动会找到 【static/home.blade.php】然后进行blade解析
+
+blade解析后变成浏览器可以阅读的html语言，显示完成！
+
+blade语法
+@extends('layouts.default');
+@section('主页','Laravel App');
+@section('content');
+	<h1>主页</h1>
+@stop
+
+extends 的意思是用这里的参数作为底板，即【resource\view\layouts】的default.blade.php作为底板
+那我们的default.blade.php 有什么特别的呢？
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@yield('title','Laravel App')</title>
+</head>
+<body>
+    @yield('content')
+</body>
+</html>
+其中 title 里面的 @yield 假设调用了 home.blade.php ，那么显示的就是第一个参数【主页】
+然后 body 里面的 @yield 调用的是【<h1>主页</h1>】所以显示的是【主页】

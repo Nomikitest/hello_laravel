@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/home','MainPageController@show')->name('mainpage');
-Route::get('/register','MainPageController@create')->name('register');
-Route::get('/welcome','MainPageController@postLogin')->name('welcome');
+Route::get('/','StaticPagesController@home')->name('home');
+Route::get('/help','StaticPagesController@help')->name('help');
+Route::get('/about','StaticPagesController@about')->name('about');
