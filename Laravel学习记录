@@ -25,7 +25,7 @@ SPC类中新建home方法，对应route中的第二个参数 'StaticPagesControl
 
 return 的是Laravel中的view方法，view方法的方式是从view文件夹中寻找路径进行解析
 例如home.blade.php文件在【resource\view\static_pages\】中 
-那么view自动会找到 【static/home.blade.php】然后进行blade解析
+那么view自动会找到【static/home.blade.php】然后进行blade解析
 
 blade解析后变成浏览器可以阅读的html语言，显示完成！
 

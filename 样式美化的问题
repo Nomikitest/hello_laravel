@@ -1,0 +1,7 @@
+样式美化的问题
+
+使用命令：npm run dev 提示报错一下是解答
+http://pilishen.com/posts/reason-and-solution-why-npm-run-dev-cannot-find-cross-env-in-laravel5.4
+
+
+注册路由时，URI signup 和 /signup 从使用上来看，并无区别，Laravel 框架兼容这两种写法。     
