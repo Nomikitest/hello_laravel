@@ -5,3 +5,95 @@ http://pilishen.com/posts/reason-and-solution-why-npm-run-dev-cannot-find-cross-
 
 
 注册路由时，URI signup 和 /signup 从使用上来看，并无区别，Laravel 框架兼容这两种写法。     
+
+可以找到laravel框架中的问题，不小心删除了provider后，无论怎么php aritisan 都无法操作
+composer dump-autoload
+
+
+提示Class App\Http\Controllers\User does not exist 是因为没有引用该类路径。
+我使用自动补全的时候会显示 use app\Models\User\User
+是因为我的User类的 namespace app\Models\User
+修改成 namespace app\Models 后，显示正常
+
+create.blade.php 里面的表单设计需要看html和css样式的知识，然后填补回去
+
+现在要看的是如何进行数据验证
+这个教程是以store方法进行数据验证的
+store方法验证了其中的3个参数，使用的验证是validate方法
+我们里面有validator方法，可以看看后续换成validator是什么情况。
+
+validate是包含在validator里面。
+function store(Request $request){
+	$this->validate($request,[
+		'name' => 'required|max:50',
+		'email' => 'required|email|unique:users|max:255',
+		'password' => 'required'
+		]);
+	return;
+}
+
+注册页面因为有post的方法
+<form method="POST" action="{{ route('users.store') }}">
+请求后提示【The page has expired due to inactivity.Please refresh and try again】
+是因为在post方法后没有加 {{ csrf_field() }} 导致的。
+
+在添加 {{ csrf_field() }} 后提示报错：
+Call to undefined function csrf_filed() (View: /home/vagrant/Code/Laravel/resources/views/users/create.blade.php)
+
+在验证信息的时候，打错了单词顺序，如上所示，所以提示报错。google自动显示让我知道有问题。
+
+我在上面的 store 方法有写上 request参数，但是在自己实际的文件中没有写该参数，导致提示 request 参数不存在
+
+1。use Illuminate\Http\Request; 
+2。use App\Http\Requests;
+
+其中1包含了2，2是旧版写法。而且实际情况也没有该文件。
+
+ GitHub 上有人专门为此写了一个扩展包 - overtrue/laravel-lang 来对 Laravel 提供默认提示信息添加多语言版本翻译。
+ composer require "overtrue/laravel-lang:~3.0"
+
+修改 config/app.php
+将locale改成zh
+
+
+当用户注册完成，且表单信息验证通过后，我们需要做以下两个操作：
+
+1. 将用户提交的信息存储到数据库，并重定向到其个人页面；
+2. 在网页顶部位置显示注册成功的提示信息；
+ $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => bcrypt($request->password),
+    ]);
+
+return redirect()->route('users.show', [$user]);
+
+如果需要获取用户输入的所有数据，可使用：
+$data = $request->all();
+
+用户模型 User::create() 创建成功后会返回一个用户对象，并包含新注册用户的所有信息。我们将新注册用户的所有信息赋值给变量 $user，并通过路由跳转来进行数据绑定。
+
+用户注册成功后，在页面顶部位置显示注册成功的提示信息。
+session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
+由于 HTTP 协议是无状态的，所以 Laravel 提供了一种用于临时保存用户数据的方法 - 会话（Session），并附带支持多种会话后端驱动，可通过统一的 API 进行使用。
+
+我们可以使用 session() 方法来访问会话实例。而当我们想存入一条缓存的数据，让它只在下一次的请求内有效时，则可以使用 flash 方法。flash 方法接收两个参数，第一个为会话的键，第二个为会话的值，我们可以通过下面这行代码的为会话赋值。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -10,7 +10,7 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-
+    protected $table = 'users';
     /**
      * The attributes that are mass assignable.
      *
@@ -19,8 +19,6 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password',
     ];
-
-    protected $table = 'users';
 
     /**
      * The attributes that should be hidden for arrays.
@@ -32,9 +30,14 @@ class User extends Authenticatable
     ];
 
     public static $rules = [
-        'nickname' => 'require|alpha_num|min:2',
-        'username' => 'require',
-        'email' => 'require|email|unique:userforadmin',
-        'password' => 'require|alpha_num|betweent:1,100|confirmed',
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:6|confirmed',
     ];
+
+    public function gravatar($size = '100')
+    {
+        $hash = md5(strtolower(trim($this->attributes['email'])));
+        return "http://www.gravatar.com/avatar/$hash?s=$size";
+    }
 }
