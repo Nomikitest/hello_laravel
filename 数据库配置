@@ -1,0 +1,21 @@
+这个项目中的测试环境是用MYSQL但是在线上是用postsql
+所以要进行差异化配置，让程序自动选择环境跑数据库。
+
+首先要在heroku 配置数据库拓展
+heroku addons:add heroku-postgresql:hobby-dev
+
+判断是否安装完成
+heroku config:set IS_IN_HEROKU=true
+
+然后在bootstrap文件夹下新建一个配置helpers.php
+
+主要是切换数据库的代码
+
+接着我们要配置bootstrap中的app.php
+将刚才新建的文件引用起来。
+require __DIR__.'/helpers.php';
+
+配置好后，我们要在config文件夹配置database.php
+
+使用：$db_config = get_db_config();
+引用该变量，之后的就是根据需求改了。
