@@ -19,3 +19,14 @@ require __DIR__.'/helpers.php';
 
 使用：$db_config = get_db_config();
 引用该变量，之后的就是根据需求改了。
+
+[Illuminate\Database\QueryException]                                         
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from information_s  
+  chema.tables where table_schema = homestead and table_name = migrations)     
+                                             
+  [PDOException]                             
+  SQLSTATE[HY000] [2002] Connection refused
+
+  最后migrate时，碰到ECONNRESET: read ECONNRESET这个问题。
+调研后，通过使用heroku run:detached php artisan migrate --force命令，解决了此问题。
+仅供参考，谢谢！
