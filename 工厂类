@@ -1,0 +1,35 @@
+database/factories/UserFactory.php
+
+新建seeder 然后在新建的 UsersTableSeeder中填写需要生成的用户数量，并且赋值
+
+准备好后要在DatabaseSeeder中调用该方法
+
+public function run()
+    {
+        Model::unguard();
+
+        $this->call(UsersTableSeeder::class);
+
+        Model::reguard();
+    }
+
+此处我没有use User 导致提示有问题
+
+然后就是接着的文件名称不一致，修改后通过 composer dump-autoload 修正过来了
+
+最后是测试的 UserFactory 里面的 字段写的和数据库的不一致，导致报错，修正后完成！
+
+然后就是开发分页功能了
+
+public function index()
+    {
+        $users = User::paginate(10);
+        return view('users.index', compact('users'));
+    }
+
+10个用户一页
+渲染分页
+{!! $users->render() !!}   
+
+由 render 方法生成的 HTML 代码默认会使用 Bootstrap 框架的样式，渲染出来的视图链接也都统一会带上 ?page 参数来设置指定页数的链接。另外还需要注意的一点是，渲染分页视图的代码必须使用 {!! !!} 语法，
+而不是 {{　}}，这样生成 HTML 链接才不会被转义。
